@@ -1,7 +1,7 @@
 const Task = require("../../models/task.model");
 
 
-// Get / client/index
+// Get / tasks/index
 module.exports.index = async (req, res) => {
   const find = {
     deleted : false
@@ -39,7 +39,7 @@ module.exports.index = async (req, res) => {
     find.title = regex;
   }
   // Hết Tìm kiếm
-  
+
 
   const tasks = await Task
   .find(find)
@@ -50,7 +50,7 @@ module.exports.index = async (req, res) => {
   res.json(tasks);
 };
 
-// Get /client/detail
+// Get /tasks/detail
 module.exports.detail = async (req, res) => {
   try {
     const id = req.params.id;
@@ -61,6 +61,27 @@ module.exports.detail = async (req, res) => {
     });
 
     res.json(task);
+  } catch (error) {
+    res.json({
+      message: "Not Found"
+    });
+  }
+};
+
+// Patch /tasks/change-status/id
+module.exports.changeStatus = async (req,res) => {
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+
+    await Task.updateOne({
+      _id: id
+    }, {
+      status: status
+    });
+    res.json({
+      message : "Success"
+    });
   } catch (error) {
     res.json({
       message: "Not Found"
