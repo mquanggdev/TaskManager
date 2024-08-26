@@ -12,14 +12,40 @@ module.exports.index = async (req, res) => {
   }
 
   const sort = {} ;
-
   const sortKey = req.query.sortKey ;
   const sortValue = req.query.sortValue ;
-
   if(sortKey && sortValue) {
     sort[sortKey] = sortValue ;
   }
-  const tasks = await Task.find(find).sort(sort);
+
+  // Phân trang
+  let limitItems = 2;
+  if(req.query.limitItems) {
+    limitItems = parseInt(req.query.limitItems);
+  }
+
+  let page = 1;
+  if(req.query.page) {
+    page = parseInt(req.query.page);
+  }
+
+  const skip = (page - 1) * limitItems;
+  // Hết Phân trang
+
+
+   // Tìm kiếm
+   if(req.query.keyword) {
+    const regex = new RegExp(req.query.keyword, "i");
+    find.title = regex;
+  }
+  // Hết Tìm kiếm
+  
+
+  const tasks = await Task
+  .find(find)
+  .limit(limitItems)
+  .skip(skip)
+  .sort(sort)
 
   res.json(tasks);
 };
