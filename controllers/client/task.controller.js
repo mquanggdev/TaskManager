@@ -3,9 +3,14 @@ const Task = require("../../models/task.model");
 
 // Get / client/index
 module.exports.index = async (req, res) => {
-  const tasks = await Task.find({
-    deleted: false
-  });
+  const find = {
+    deleted : false
+  }
+  const status = req.query.status ;
+  if(status) {
+    find.status = status;
+  }
+  const tasks = await Task.find(find);
 
   res.json(tasks);
 };
