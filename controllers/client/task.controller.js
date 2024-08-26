@@ -68,14 +68,14 @@ module.exports.detail = async (req, res) => {
   }
 };
 
-// Patch /tasks/change-status/id
+// Patch /tasks/change-status
 module.exports.changeStatus = async (req,res) => {
   try {
-    const id = req.params.id;
+    const ids = req.body.ids;
     const status = req.body.status;
 
-    await Task.updateOne({
-      _id: id
+    await Task.updateMany({
+      _id: {$in : ids}
     }, {
       status: status
     });
