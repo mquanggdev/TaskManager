@@ -88,3 +88,18 @@ module.exports.changeStatus = async (req,res) => {
     });
   }
 };
+
+// Post /tasks/create
+module.exports.create = async (req,res) => {
+  try {
+    const newTask = new Task(req.body);
+    await newTask.save() ;
+    res.json({
+      message : "Add Success"
+    });
+  } catch (error) {
+    res.json({
+      message: "Not Valid"
+    });
+  }
+};
