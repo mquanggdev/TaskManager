@@ -103,3 +103,21 @@ module.exports.create = async (req,res) => {
     });
   }
 };
+
+
+// Post /tasks/edit/:id
+module.exports.edit = async (req,res) => {
+  try {
+    const id = req.params.id ;
+    await Task.updateOne({
+      _id : id
+    } , req.body)
+    res.json({
+      message : "Edit Success"
+    });
+  } catch (error) {
+    res.json({
+      message: "Not Valid"
+    });
+  }
+};
