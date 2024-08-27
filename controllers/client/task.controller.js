@@ -121,3 +121,25 @@ module.exports.edit = async (req,res) => {
     });
   }
 };
+
+// Patch /tasks/delete
+module.exports.delete = async (req,res) => {
+  try {
+    const ids = req.body.ids;
+
+    await Task.updateMany({
+      _id: { $in: ids }
+    }, {
+      deleted: true
+    });
+
+
+    res.json({
+      message : "Delete Success"
+    });
+  } catch (error) {
+    res.json({
+      message: "Not Valid"
+    });
+  }
+};
