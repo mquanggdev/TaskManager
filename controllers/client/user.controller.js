@@ -42,3 +42,36 @@ module.exports.register = async (req, res) => {
     });
   }
 }
+// [POST] /users/login
+module.exports.login = async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.findOne({
+      email : req.body.email,
+      deleted : false
+    })
+
+    if(!user){
+      res.json({
+        code : 400 ,
+        message : "Email không tồn tại!"
+      })
+    }
+    if(md5(req.body.password) != user.password){
+      res.json({
+        code : 400 ,
+        message : "Sai mật khẩu!"
+      })
+    }
+    
+    res.json({
+      code: 200,
+      message: "Đăng nhập thành công!",
+      token : user.token
+    });
+  } catch (error) {
+    res.json({
+      message: "Not Found"
+    });
+  }
+}
