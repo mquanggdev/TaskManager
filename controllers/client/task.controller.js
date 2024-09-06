@@ -96,7 +96,8 @@ module.exports.create = async (req,res) => {
     const newTask = new Task(req.body);
     await newTask.save() ;
     res.json({
-      message : "Add Success"
+      message : "Add Success",
+      task : newTask
     });
   } catch (error) {
     res.json({
