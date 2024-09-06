@@ -4,6 +4,12 @@ const Task = require("../../models/task.model");
 // Get / tasks/index
 module.exports.index = async (req, res) => {
   const find = {
+    $or : [
+      {
+        createBy : req.user.id , 
+        listUser : req.user.id
+      }
+    ],
     deleted : false
   }
   const status = req.query.status ;
